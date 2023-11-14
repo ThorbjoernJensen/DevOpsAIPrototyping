@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.34031.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "DevOpsAIPrototyping", "..\DevOpsAIPrototyping\DevOpsAIPrototyping.deployproj", "{085DD99D-79A9-4A8D-BD19-96D1B47A196B}"
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "LogicApps", "LogicApps\LogicApps.deployproj", "{085DD99D-79A9-4A8D-BD19-96D1B47A196B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
