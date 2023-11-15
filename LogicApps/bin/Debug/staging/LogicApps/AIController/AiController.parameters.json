@@ -1,0 +1,17 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "logicAppName": {
+      "value": "FedeApp"
+    },
+    "openai_apikey": {,
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/f6e5083a-304c-4f07-a853-0760292dae1a/resourceGroups/rg-DevOpsAIPrototyping/providers/Microsoft.KeyVault/vaults/kv-DevOpsAIPrototyping"
+        },
+        "secretName": "openai-apikey"
+      }
+  }
+  }
+}

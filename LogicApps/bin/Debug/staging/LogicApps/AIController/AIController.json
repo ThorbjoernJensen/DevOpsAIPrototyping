@@ -18,21 +18,55 @@
         "australiaeast",
         "australiasoutheast",
         "brazilsouth",
+        "brazilsoutheast",
+        "canadacentral",
+        "canadaeast",
+        "centralindia",
         "centralus",
         "eastasia",
         "eastus",
         "eastus2",
+        "francecentral",
+        "francesouth",
+        "germanynorth",
+        "germanywestcentral",
         "japaneast",
         "japanwest",
+        "koreacentral",
+        "koreasouth",
         "northcentralus",
         "northeurope",
+        "norwayeast",
+        "norwaywest",
+        "polandcentral",
+        "qatarcentral",
+        "southafricanorth",
+        "southafricawest",
         "southcentralus",
         "southeastasia",
+        "southindia",
+        "swedencentral",
+        "switzerlandnorth",
+        "switzerlandwest",
+        "uaecentral",
+        "uaenorth",
+        "uksouth",
+        "ukwest",
+        "westcentralus",
         "westeurope",
-        "westus"
+        "westindia",
+        "westus",
+        "westus2",
+        "westus3"
       ],
       "metadata": {
         "description": "Location of the Logic App."
+      }
+    },
+    "openai_apikey": {
+      "type": "securestring",
+      "metadata": {
+        "description": "API key for openai"
       }
     }
   },
@@ -49,11 +83,28 @@
       "properties": {
         "definition": {
           "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
-          "contentVersion": "1.0.0.0",
-          "actions": {},
-          "outputs": {},
+          "actions": {
+            "Response": {
+              "type": "Response",
+              "kind": "http",
+              "inputs": {
+                "statusCode": 200
+              },
+              "runAfter": {}
+            }
+          },
           "parameters": {},
-          "triggers": {}
+          "triggers": {
+            "manual": {
+              "type": "Request",
+              "kind": "Http",
+              "inputs": {
+                "schema": {}
+              }
+            }
+          },
+          "contentVersion": "1.0.0.0",
+          "outputs": {}
         },
         "parameters": {}
       }

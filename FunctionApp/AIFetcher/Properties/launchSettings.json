@@ -2,7 +2,7 @@
   "profiles": {
     "AIFetcher": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7033",
+      "commandLineArgs": "--port 7157",
       "launchBrowser": false
     }
   }
