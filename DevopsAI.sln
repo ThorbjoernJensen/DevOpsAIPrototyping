@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "LogicApps", "LogicApps\LogicApps.deployproj", "{085DD99D-79A9-4A8D-BD19-96D1B47A196B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIFetcher", "FunctionApp\AIFetcher\AIFetcher.csproj", "{76E6E8FA-CAA3-4E3C-A4CF-3406B18BB946}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIFetcher", "FunctionApp\AIFetcher\AIFetcher.csproj", "{76E6E8FA-CAA3-4E3C-A4CF-3406B18BB946}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

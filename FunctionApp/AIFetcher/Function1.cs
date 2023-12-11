@@ -15,6 +15,8 @@ namespace AIFetcher
 {
     public static class Function1
     {
+
+
         [FunctionName("Function1")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
@@ -47,10 +49,13 @@ namespace AIFetcher
         new ChatMessage(ChatRole.System, "You should provide each workitem with an Title and corresponding description"),       
         new ChatMessage(ChatRole.System, "the arrays containing the individual workitems should be collected in an array using square brackets [] and given the name workitems. An example of an valid array output is \"workItems\": [[{object1}],[{object2}], etc..]"),
         new ChatMessage(ChatRole.System, "the data should be enclosed in {} as in JSON format. and example is {\"workItems\":[[{object1}],[{object2}]}"),
-        new ChatMessage(ChatRole.User, $"{input}"),
+        //new ChatMessage(ChatRole.User, $"{input}"),
     },
                 MaxTokens = 1000
             };
+
+            //Adds the user input to the message history
+            chatCompletionsOptions.Messages.Add(new ChatMessage(ChatRole.User, $"{input}"));
 
             Response<ChatCompletions> response = client.GetChatCompletions(
                 deploymentOrModelName: "gpt-35-turbo",
@@ -59,6 +64,14 @@ namespace AIFetcher
             Console.WriteLine("Response content before json extract");
             Console.WriteLine(response.Value.Choices[0].Message.Content);
 
+            chatCompletionsOptions.Messages.Add(new ChatMessage(ChatRole.Assistant, response.Value.Choices[0].Message.Content));
+
+            Console.WriteLine("message history:");
+            foreach (var item in chatCompletionsOptions.Messages)
+            {
+                Console.WriteLine(item.Content);    
+            }   
+            
             //extract the JSON from the response and return it
             try
             {
