@@ -36,6 +36,9 @@ namespace AIFetcher
 
             OpenAIClient client = new(new Uri(endpoint), new AzureKeyCredential(key));
 
+
+
+
             var chatCompletionsOptions = new ChatCompletionsOptions()
             {
                 Messages =
