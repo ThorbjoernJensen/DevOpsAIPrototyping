@@ -39,9 +39,13 @@ namespace AIFetcher
                     // 
                     json["message"] = chatPart;         
                 }
+
+                //No json-part: we provide an empty workitems object
                 else
                 {
-                    // Handle cases where the braces are not found
+                    json["message"] = response;
+                    json["WorkItems"] = JObject.Parse("{}");
+                    Console.WriteLine("JObjecten with only message created in JSONExtractor");
                 }
 
             }
