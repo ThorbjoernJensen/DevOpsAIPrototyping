@@ -15,6 +15,8 @@ using AIFetcher.Models;
 using System.Collections.Generic;
 using System.Data.Common;
 using Azure.AI.OpenAI;
+using Azure;
+using AIFetcher.ActivityFunctions;
 
 namespace AIFetcher
 {
@@ -31,16 +33,26 @@ namespace AIFetcher
             UserInput userInput = context.GetInput<UserInput>();
             //bool running = true;
 
+            string endpoint = Environment.GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
+            string key = Environment.GetEnvironmentVariable("AZURE_OPENAI_KEY");
 
             var chatCompletionsOptions = await context.CallActivityAsync<ChatCompletionsOptions>("InstantiateMessageHistory",(userInput));
 
             userInput.input = await context.WaitForExternalEvent<string>("UserInput");
             Console.WriteLine("Recieved id in orchestrator: " + userInput.input);
 
-            chatCompletionsOptions = await context.CallActivityAsync<ChatCompletionsOptions>("UpdateMessageHistory", (userInput, chatCompletionsOptions));
+            ChatMessage userChatInput = new ChatMessage(ChatRole.System, userInput.input);
+ 
+            chatCompletionsOptions = await context.CallActivityAsync<ChatCompletionsOptions>(nameof(BuildMessageHistory.AppendChatMessage), (userChatInput, chatCompletionsOptions));
+
+            Response<ChatCompletions> response = await context.CallActivityAsync<Response<ChatCompletions>>(nameof(HandleAIFetch.PostChatRequest), (chatCompletionsOptions, endpoint, key));
+
+            JObject jObject = await context.CallActivityAsync<JObject>(nameof(HandleAIFetch.CompileResponseObject), response);
 
 
-          
+            //
+
+
 
 
 

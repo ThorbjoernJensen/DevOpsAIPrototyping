@@ -17,7 +17,7 @@ namespace AIFetcher.ActivityFunctions
         [FunctionName(nameof(InstantiateChatCompletions))]
         public async Task<ChatCompletionsOptions> InstantiateChatCompletions([ActivityTrigger] IDurableActivityContext context, ILogger log)
         {
-         
+
             //Provides basic prompting
             ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions()
             {
@@ -41,21 +41,18 @@ namespace AIFetcher.ActivityFunctions
 
         }
 
-        [FunctionName(nameof(AppendUserInput))]
-        public async Task<ChatCompletionsOptions> AppendUserInput([ActivityTrigger] IDurableActivityContext context, ILogger log)
+        [FunctionName(nameof(AppendChatMessage))]
+        public async Task<ChatCompletionsOptions> AppendChatMessage([ActivityTrigger] IDurableActivityContext context, ILogger log)
         {
-            (UserInput userInput, ChatCompletionsOptions chatCompletionsOptions) = context.GetInput<(UserInput, ChatCompletionsOptions)>();
-
+            (ChatMessage chatMessage, ChatCompletionsOptions chatCompletionsOptions) = context.GetInput<(ChatMessage, ChatCompletionsOptions)>();
 
             //Appends the user input to the message history
-            chatCompletionsOptions.Messages.Add(new ChatMessage(ChatRole.User, $"{userInput.input}"));
+            chatCompletionsOptions.Messages.Add(chatMessage);
 
             return chatCompletionsOptions;
 
-
-
         }
-
     }
+}
 
 

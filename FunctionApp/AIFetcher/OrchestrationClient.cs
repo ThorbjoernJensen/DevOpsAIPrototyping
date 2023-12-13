@@ -52,8 +52,5 @@ namespace AIFetcher
             return starter.CreateCheckStatusResponse(req, instanceId);
             //return new OkObjectResult(json);
         }
-
-
-
     }
 }
