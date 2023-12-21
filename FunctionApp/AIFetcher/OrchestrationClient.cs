@@ -109,21 +109,15 @@ namespace AIFetcher
                 if (!JToken.DeepEquals(stateResponse1.EntityState, stateResponse2.EntityState))
 
                 {
-                    Console.WriteLine("we entered the condition that !stateResponse1.Equals stateResponse2 - the two Entity states differ");
+                    Console.WriteLine("Objects were eveluated to differ");
+                    Console.WriteLine("stateResponse1.Equals(stateResponse2) = " + stateResponse1.Equals(stateResponse2));
                     Console.WriteLine("JToken.DeepEquals(stateResponse1.EntityState, stateResponse2.EntityState) = " + JToken.DeepEquals(stateResponse1.EntityState, stateResponse2.EntityState));
-
-
-                    if (JToken.DeepEquals(stateResponse1.EntityState, stateResponse2.EntityState))
-                    {
-                        Console.WriteLine("but JToken can see that they are equal");
-                    }
-
 
                     break;
                 }
 
-                Console.WriteLine("Objects were eveluated to be equal: stateResponse1.Equals(stateResponse2) = "+ stateResponse1.Equals(stateResponse2));
-             
+                Console.WriteLine("Objects were eveluated to be equal");             
+                Console.WriteLine("stateResponse1.Equals(stateResponse2) = "+ stateResponse1.Equals(stateResponse2));             
                 Console.WriteLine("JToken.DeepEquals(stateResponse1.EntityState, stateResponse2.EntityState) = "+ JToken.DeepEquals(stateResponse1.EntityState, stateResponse2.EntityState));
 
                 // Wait for a specified interval before polling again

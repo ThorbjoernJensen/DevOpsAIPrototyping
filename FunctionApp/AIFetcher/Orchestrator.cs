@@ -39,20 +39,16 @@ namespace AIFetcher
 
             var chatCompletionsOptions = await context.CallActivityAsync<ChatCompletionsOptions>(nameof(BuildMessageHistory.InstantiateChatCompletions), null);
 
-
-
             while (running)
             {
-
-
                 //userInput.input = await context.WaitForExternalEvent<string>("UserInput");
                 userInput = await context.WaitForExternalEvent<UserInput>("UserInput");
-                Console.WriteLine("Event Recieved id in orchestrator: " + userInput.input);
+                Console.WriteLine("Event Recieved in orchestrator with userMessage: " + userInput.input);
 
-                ChatMessage userChatInput = new ChatMessage(ChatRole.User, userInput.input);
+                ChatMessage chatMessageUserInput = new ChatMessage(ChatRole.User, userInput.input);
 
                 //userChatInput is appended to already existing message history
-                chatCompletionsOptions = await context.CallActivityAsync<ChatCompletionsOptions>(nameof(BuildMessageHistory.AppendChatMessage), (userChatInput, chatCompletionsOptions));
+                chatCompletionsOptions = await context.CallActivityAsync<ChatCompletionsOptions>(nameof(BuildMessageHistory.AppendChatMessage), (chatMessageUserInput, chatCompletionsOptions));
                 
                 
                 //Console.WriteLine("message history i orchestrator:");
@@ -63,22 +59,28 @@ namespace AIFetcher
 
                 //Response<ChatCompletions> response = await context.CallActivityAsync<Response<ChatCompletions>>(nameof(HandleAIFetch.PostChatRequest), (endpoint, key, chatCompletionsOptions));
                 
-                string response = await context.CallActivityAsync<string>(nameof(HandleAIFetch.PostChatRequest), (endpoint, key, chatCompletionsOptions));
-
-                ChatMessage AIChatInput = new ChatMessage(ChatRole.System, userInput.input);
-
-                //Updates message history with ai response
-                chatCompletionsOptions = await context.CallActivityAsync<ChatCompletionsOptions>(nameof(BuildMessageHistory.AppendChatMessage), (AIChatInput, chatCompletionsOptions));
+                string response = await context.CallActivityAsync<string>(nameof(HandleAIFetch.PostChatRequest), (endpoint, key, chatCompletionsOptions));                         
 
                 JObject jObject = await context.CallActivityAsync<JObject>(nameof(HandleAIFetch.CompileResponseObject), response);
                 Console.WriteLine("vores objekt til response: " + jObject.ToString(Newtonsoft.Json.Formatting.Indented));
 
                 //await context.CallEntityAsync<ChatResponse>("ChatResponse", nameof(ChatResponse.Set), jObject);
+;
+                ChatMessage chatMessageAIOutput = new ChatMessage(ChatRole.System, jObject.ToString(Newtonsoft.Json.Formatting.Indented));
+                //Updates message history with ai response
+
+                chatCompletionsOptions = await context.CallActivityAsync<ChatCompletionsOptions>(nameof(BuildMessageHistory.AppendChatMessage), (chatMessageAIOutput, chatCompletionsOptions));
+
+                Console.WriteLine("message history i orchestrator efter append af AIChatInput: ");
+                foreach (var item in chatCompletionsOptions.Messages)
+                {
+                    Console.WriteLine(item.Content);
+                }
+                Console.WriteLine("-end of message history-");
 
                 var entityId = new EntityId(nameof(ChatResponse), userInput.instanceId);
 
-                // Two-way call to the entity which returns a value - awaits the response
-               
+                // Two-way call to the entity which returns a value - awaits the response               
                 await context.CallEntityAsync(entityId, "Set", jObject);
                 
                 JObject currentJObject = await context.CallEntityAsync<JObject>(entityId, "Get");                               
@@ -91,27 +93,8 @@ namespace AIFetcher
 
             return new OkObjectResult($"Orchestration with instanceId {context.InstanceId} ended.");
 
-
-
-            ////Fetshes and aggregates workItemRelation- and column data
-            //(List<WorkItemRelation> workItemRelationList, List<Column> columns) = await context.CallActivityAsync<(List<WorkItemRelation>, List<Column>)>("ProcessMetadata", devOpsRequestData);
-            //(UserInput userInput, ChatCompletionsOptions chatCompletionsOptions)
-
-
-            //while (running)
-            //{
-            //    //var newPayload = await context.WaitForExternalEvent<string>("newEvent");
-            //    var event1 = await context.WaitForExternalEvent<string>("Event1");
-            //    Console.WriteLine("Something worked");
-            //    // Process the new payload
-            //    // ...
-
-            //    if (!running) // Determine if the orchestration should end
-            //    {
-            //        break;
-            //    }
-            //}
-            Console.WriteLine("something worked");
+    
+            Console.WriteLine("Orchestrator returned");
 
 
 
