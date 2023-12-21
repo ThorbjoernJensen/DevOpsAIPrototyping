@@ -12,10 +12,12 @@ namespace AIFetcher.Models
         {
             this.input = input;
             this.workItems = workItems;
+            
         }
 
         public string input { get; set; }
         public string workItems { get; set; }
+        public string instanceId { get; set; }
     }
 }
 
